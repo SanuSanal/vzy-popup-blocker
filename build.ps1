@@ -2,7 +2,7 @@
 $ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
 
-$files = @("manifest.json", "background.js", "remove.js", "popup.html", "popup.js", "icons")
+$files = @("manifest.json", "background.js", "remove.js", "content.js", "popup.html", "popup.js", "icons")
 $out = "dist/vzy-popup-blocker.zip"
 
 New-Item -ItemType Directory -Force dist | Out-Null

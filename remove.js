@@ -1,4 +1,4 @@
-// Shared by popup.js and background.js.
+// Shared by popup.js, background.js and content.js.
 
 const VZY_PATTERNS = [
   "*://vzy.com/*",
