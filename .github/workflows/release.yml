@@ -1,0 +1,39 @@
+name: Build release zip
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to rebuild (e.g. v1.0.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+
+      - name: Check manifest version matches tag
+        shell: pwsh
+        run: |
+          $version = (Get-Content manifest.json -Raw | ConvertFrom-Json).version
+          if ("v$version" -ne $env:TAG) {
+            Write-Error "manifest.json version is $version but the release tag is $env:TAG. Bump the version before releasing."
+          }
+
+      - name: Build zip
+        shell: pwsh
+        run: ./build.ps1
+
+      - name: Upload zip to release
+        run: gh release upload "$TAG" dist/vzy-popup-blocker.zip --clobber

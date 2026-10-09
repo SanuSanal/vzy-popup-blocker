@@ -79,4 +79,11 @@ Bookmarklets need the browser's address bar or bookmarks. If you added vzy to yo
 ./build.ps1
 ```
 
-This creates `dist/vzy-popup-blocker.zip`, with `manifest.json` at the root of the zip. Bump `version` in `manifest.json` first, then attach the zip to a new GitHub release.
+This creates `dist/vzy-popup-blocker.zip`, with `manifest.json` at the root of the zip.
+
+Publishing a release on GitHub builds the zip and attaches it automatically (see [.github/workflows/release.yml](.github/workflows/release.yml)):
+
+1. Bump `version` in `manifest.json` (e.g. `1.0.1`), commit and push.
+2. Create a release whose tag is `v` + that version (e.g. `v1.0.1`), on GitHub or with `gh release create v1.0.1 --generate-notes`.
+
+The workflow fails if the tag doesn't match the manifest version. To rebuild the zip for an existing release, run the workflow manually from the Actions tab and enter the tag.
